@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Facts FastAPI</title>
+</head>
+<body>
+    <h1>Private facts demo</h1>
+    <p>Here you can try out the Tahoe-LAFS public test grid.</p>
+    <p>Note that use of tahoe in this way does not adhere to the core Tahoe concept of <a href="https://tahoe-lafs-docs-ng.readthedocs.io/en/latest/about-tahoe.html">provider-independent security </a> for a number of reasons:</p>
+    <p>1. You are transmitting your unencrypted data to us over the web;</p>
+    <p>2. the encryption and storage is happening on our server; and</p>
+    <p>3. the capability string for retrieving the data is known to and processed by our server.</p>
+    <p>This app is only for demonstration purposes, and you should not expect either security or persistence for the data uploaded to it.</p>
+    <p>To gain the actual security benefits of Tahoe, you should <a href="https://tahoe-lafs-docs-ng.readthedocs.io/en/latest/operator-tutorial/index.html">run your own server</a>.</p>
+    <form method="post" action="/">
+        <div>
+            <label for="data">Input text:</label>
+            <input type="data" id="data" name="data" required>
+        </div>
+        <div>
+            <button type="submit">Encrypt and store</button>
+        </div>
+    </form>
+    <form method="post" action="/">
+        <div>
+            <label for="cap_string">Input capability string:</label>
+            <input type="cap_string" id="cap_string" name="cap_string" required>
+        </div>
+        <div>
+            <button type="submit">Decrypt and retrieve</button>
+        </div>
+    </form>
+    {% if cap_string %}
+        <p>Capability string: <b>{{ cap_string }}</b></p>
+    {% endif %}
+    {% if data %}
+        <p>Retrieved data: <b>{{ data }}</b></p>
+    {% endif %}
+</body>
+</html>
