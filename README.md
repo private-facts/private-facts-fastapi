@@ -1,5 +1,21 @@
 # Health tracker
+## Running the app
+```bash
+uv run fastapi dev src/api/main.py
+```
+or
+```bash
+just run
+```
 
+## Running the tests
+```bash
+uv run pytest
+```
+or
+```bash
+just test
+```
 
 ### Use case  
 This proof-of-concept will
