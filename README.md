@@ -1,4 +1,14 @@
-# Health tracker
+# Private Facts FastAPI
+## Installation
+Install dependencies:
+```bash
+uv sync
+```
+Create a `.env`:
+```bash
+cp env-template .env
+```
+
 ## Running the app
 ```bash
 uv run fastapi dev src/api/main.py
