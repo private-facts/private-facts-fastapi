@@ -1,0 +1,2 @@
+BASE_URL = https://testgrid.tahoe-lafs.org:5000/s3kbdgg3j4ohifa633tt7yi25drl6jqa  # Pubgrid url: does not work
+LOCAL_BASE_URL = http://127.0.0.1:3456/uri/ # Works if you're running a local Tahoe

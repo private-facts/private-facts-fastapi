@@ -1,6 +1,17 @@
+import urllib3
+
+from decouple import config
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+
+from tahoe import TahoeClient
+
+BASE_URL = config('BASE_URL')
+LOCAL_BASE_URL = config('LOCAL_BASE_URL')
+HTTP = urllib3.PoolManager()
+
+tahoe_client = TahoeClient(base_url=LOCAL_BASE_URL, http=HTTP)
 
 app = FastAPI()
 
@@ -14,4 +25,12 @@ def index(request: Request, data: str = Form(None), cap_string: str = Form(None)
     if request.method == "GET":
         return templates.TemplateResponse(request, "index.html")
     else:
-        return templates.TemplateResponse(request, "index.html", {"data": data, "cap_string": cap_string})
+        if data:
+            cap_string = tahoe_client.post_data(data)
+            return templates.TemplateResponse(request, "index.html", {"cap_string": cap_string})
+        elif cap_string:
+            response = tahoe_client.get_data(cap_string)
+            data = response[0]
+            return templates.TemplateResponse(request, "index.html", {"data": data})
+
+    return templates.TemplateResponse(request, "index.html")
