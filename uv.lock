@@ -409,7 +409,6 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "python-decouple" },
-    { name = "urllib3" },
 ]
 
 [package.dev-dependencies]
@@ -423,7 +422,6 @@ dev = [
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.1" },
     { name = "python-decouple", specifier = ">=3.8" },
-    { name = "urllib3", specifier = ">=2.5.0" },
 ]
 
 [package.metadata.requires-dev]

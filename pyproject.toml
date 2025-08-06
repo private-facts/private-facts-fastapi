@@ -7,7 +7,6 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi[standard]>=0.116.1",
     "python-decouple>=3.8",
-    "urllib3>=2.5.0",
 ]
 
 
