@@ -5,8 +5,11 @@ description = "Tahoe-lafs FastAPI app"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi[standard]>=0.116.1",
+    "fastapi>=0.116.1",
+    "fastapi-cli>=0.0.8",
+    "jinja2>=3.1.6",
     "python-decouple>=3.8",
+    "urllib3>=2.5.0",
 ]
 
 
