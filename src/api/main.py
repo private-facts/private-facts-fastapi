@@ -24,13 +24,12 @@ def index(request: Request, data: str = Form(None), cap_string: str = Form(None)
     """
     if request.method == "GET":
         return templates.TemplateResponse(request, "index.html")
-    else:
-        if data:
-            cap_string = tahoe_client.post_data(data)
-            return templates.TemplateResponse(request, "index.html", {"cap_string": cap_string})
-        elif cap_string:
-            response = tahoe_client.get_data(cap_string)
-            data = response[0]
-            return templates.TemplateResponse(request, "index.html", {"data": data})
+    elif data:
+        cap_string = tahoe_client.post_data(data)
+        return templates.TemplateResponse(request, "index.html", {"cap_string": cap_string})
+    elif cap_string:
+        response = tahoe_client.get_data(cap_string)
+        data = response[0]
+        return templates.TemplateResponse(request, "index.html", {"data": data})
 
     return templates.TemplateResponse(request, "index.html")
