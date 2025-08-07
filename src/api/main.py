@@ -1,24 +1,29 @@
 import urllib3
 
 from decouple import config
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from tahoe import TahoeClient
+from .tahoe import TahoeClient
 
 BASE_URL = config('BASE_URL')
 LOCAL_BASE_URL = config('LOCAL_BASE_URL')
 HTTP = urllib3.PoolManager()
 
-tahoe_client = TahoeClient(base_url=LOCAL_BASE_URL, http=HTTP)
-
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
+def get_tahoe_client():
+    return TahoeClient(base_url=LOCAL_BASE_URL, http=HTTP)
+
+
 @app.api_route("/", methods=["GET", "POST"], response_class=HTMLResponse)
-def index(request: Request, data: str = Form(None), cap_string: str = Form(None)):
+def index(request: Request,
+          data: str = Form(None),
+          cap_string: str = Form(None),
+          tahoe_client = Depends(get_tahoe_client)):
     """
     Load index.html. If a post request was sent and data has been returned, include the data in the response context.
     """
