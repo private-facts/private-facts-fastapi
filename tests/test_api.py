@@ -36,7 +36,7 @@ class FakeTahoe:
         return self.storage.get(cap_string), status
 
 
-def test_index_get():
+def test_index_get_happy():
     response = client.get("/")
     
     assert response.status_code == 200
@@ -45,10 +45,18 @@ def test_index_get():
     assert "Input text" in response.text
     assert "Input capability string" in response.text
 
-def test_index_post_data():
+def test_index_post_data_happy():
     fake_tahoe = FakeTahoe()
     app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
 
     response = client.post("/", data={"data": "test_data"})
 
     assert "test_cap_string" in response.text
+
+def test_index_post_cap_string_happy():
+    fake_tahoe = FakeTahoe()
+    app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
+
+    response = client.post("/", data={"cap_string": "test_cap_string"})
+
+    assert "test_data" in response.text
