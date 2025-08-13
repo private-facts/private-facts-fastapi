@@ -60,3 +60,13 @@ def test_index_post_cap_string_happy():
     response = client.post("/", data={"cap_string": "test_cap_string"})
 
     assert "test_data" in response.text
+
+def test_index_post_no_data_or_cap_string():
+    fake_tahoe = FakeTahoe()
+    app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
+
+    response = client.post("/")
+
+    assert response.status_code == 200
+    assert "test_data" not in response.text
+    assert "test_cap_string" not in response.text
