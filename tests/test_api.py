@@ -51,6 +51,7 @@ def test_index_post_data_happy():
 
     response = client.post("/", data={"data": "test_data"})
 
+    assert response.status_code == 200
     assert "test_cap_string" in response.text
 
 def test_index_post_cap_string_happy():
@@ -59,6 +60,7 @@ def test_index_post_cap_string_happy():
 
     response = client.post("/", data={"cap_string": "test_cap_string"})
 
+    assert response.status_code == 200
     assert "test_data" in response.text
 
 def test_index_post_no_data_or_cap_string():
