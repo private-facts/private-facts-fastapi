@@ -44,6 +44,8 @@ def test_index_get_happy():
     assert "Here you can try out the Tahoe-LAFS public test grid" in response.text
     assert "Input text" in response.text
     assert "Input capability string" in response.text
+    assert "test_data" not in response.text
+    assert "test_cap_string" not in response.text
 
 def test_index_post_data_happy():
     fake_tahoe = FakeTahoe()
@@ -53,6 +55,7 @@ def test_index_post_data_happy():
 
     assert response.status_code == 200
     assert "test_cap_string" in response.text
+    assert "test_data" not in response.text
 
 def test_index_post_cap_string_happy():
     fake_tahoe = FakeTahoe()
@@ -62,6 +65,7 @@ def test_index_post_cap_string_happy():
 
     assert response.status_code == 200
     assert "test_data" in response.text
+    assert "test_cap_string" not in response.text
 
 def test_index_post_no_data_or_cap_string():
     fake_tahoe = FakeTahoe()
