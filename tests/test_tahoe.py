@@ -212,6 +212,25 @@ def test_put_data_happy(client, mock_http):
     assert get_update_result[0] == 'datatest'
     assert get_update_result[1] == 200
 
+def test_put_data_file_happy(client, mock_http, data_file):
+    mock_create_response = Mock(status=201, data=b"cap_string")
+    mock_http.request.return_value = mock_create_response
+
+    cap_string = client.post_data(data_file, mutable=True)
+
+    mock_update_response = Mock(status=200, data=b"cap_string")
+    mock_http.request.return_value = mock_update_response
+    new_data_file = Mock()
+    new_data_file.read.return_value = "datatest"
+
+    client.put_data(new_data_file, cap_string=cap_string)
+    mock_http.request.return_value = Mock(status=200, data=b'datatest')
+    get_update_result = client.get_data(cap_string)
+
+    assert get_update_result[0] == 'datatest'
+    assert get_update_result[1] == 200
+
+
 # Make dir tests
 def test_make_dir_happy(client, mock_http):
     mock_response = Mock(status=200, data=b"$DIRCAP")
