@@ -23,8 +23,6 @@ def data_file():
 def test_create_client_happy(client, mock_http):
     assert client.base_url == BASE_URL
     assert client.http is mock_http
-    
-
 
 def test_create_client_no_url(mock_http):
     with pytest.raises(TypeError) as e:
@@ -229,6 +227,12 @@ def test_put_data_file_happy(client, mock_http, data_file):
 
     assert get_update_result[0] == 'datatest'
     assert get_update_result[1] == 200
+
+def test_put_data_exception(client, mock_http):
+    mock_http.request.side_effect = Exception()
+    
+    with pytest.raises(Exception):
+        client.put_data('test_data', 'cap_string')
 
 
 # Make dir tests

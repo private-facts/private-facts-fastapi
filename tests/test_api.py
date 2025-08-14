@@ -17,14 +17,13 @@ class FakeTahoe:
             'test_data': 'test_cap_string'
         }
 
-
     def post_data(self, data, exception=False):
         if exception:
             raise ValueError("Simulated exception.")
         if self.bad_response:
             return None
-        cap_string = self.fake_data.get(data) # Get the URI from the fake_data dict
-        self.storage[cap_string] = data # Store the URI as key and the data as value for later retrieval
+        cap_string = self.fake_data.get(data) # Get the cap_string from the fake_data dict
+        self.storage[cap_string] = data # Store the cap_string as key and the data as value for later retrieval
         return cap_string
 
     def get_data(self, cap_string):
