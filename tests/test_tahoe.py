@@ -234,6 +234,14 @@ def test_put_data_exception(client, mock_http):
     with pytest.raises(Exception):
         client.put_data('test_data', 'cap_string')
 
+def test_put_data_bad_response(client, mock_http):
+    mock_response = Mock(status=404)
+    mock_http.request.return_value = mock_response
+    
+    result = client.put_data("testdata", "cap_string")
+
+    mock_http.request.assert_called_once_with("PUT", BASE_URL+"cap_string?format=SDMF", "testdata")
+    assert result is None
 
 # Make dir tests
 def test_make_dir_happy(client, mock_http):
