@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+import pytest
 
 from api.main import app, get_tahoe_client
 
@@ -10,15 +11,16 @@ class FakeTahoe:
     """
     An object which mocks a Tahoe client.
     """
-    def __init__(self, storage={}, bad_response=False):
+    def __init__(self, storage={}, bad_response=False, always_exception=False):
         self.storage = storage
         self.bad_response = bad_response
+        self.always_exception = always_exception
         self.fake_data = {
             'test_data': 'test_cap_string'
         }
 
     def post_data(self, data, exception=False):
-        if exception:
+        if self.always_exception or exception:
             raise ValueError("Simulated exception.")
         if self.bad_response:
             return None
@@ -74,3 +76,15 @@ def test_index_post_no_data_or_cap_string():
     assert response.status_code == 200
     assert "test_data" not in response.text
     assert "test_cap_string" not in response.text
+
+def test_index_post_data_exception():
+    fake_tahoe = FakeTahoe(always_exception=True)
+    app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
+
+    response = client.post("/", data={"data": "test_data"})
+
+    assert response.status_code == 200
+    assert "Error" in response.text
+    assert "Unable to contact Tahoe server" in response.text
+    assert "ValueError" in response.text
+    assert "Simulated exception" in response.text
