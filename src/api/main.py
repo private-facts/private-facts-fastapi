@@ -28,13 +28,36 @@ def index(request: Request,
     Load index.html. If a post request was sent and data has been returned, include the data in the response context.
     """
     if request.method == "GET":
+        
         return templates.TemplateResponse(request, "index.html")
+    
     elif data:
-        cap_string = tahoe_client.post_data(data)
-        return templates.TemplateResponse(request, "index.html", {"cap_string": cap_string})
+        try:
+            cap_string = tahoe_client.post_data(data)
+
+            return templates.TemplateResponse(request, "index.html", {"cap_string": cap_string})
+        
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            error_context = {
+                "type": type(e).__name__,
+                "message": str(e)
+            }
+
+            return templates.TemplateResponse(request, "error.html", {"exception": error_context})
+
     elif cap_string:
-        response = tahoe_client.get_data(cap_string)
-        data = response[0]
-        return templates.TemplateResponse(request, "index.html", {"data": data})
+        try:
+            response = tahoe_client.get_data(cap_string)
+            data = response[0]
+            return templates.TemplateResponse(request, "index.html", {"data": data})
+        
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            error_context = {
+                "type": type(e).__name__,
+                "message": str(e)
+            }
+            return templates.TemplateResponse(request, "error.html", {"exception": error_context})
 
     return templates.TemplateResponse(request, "index.html")
