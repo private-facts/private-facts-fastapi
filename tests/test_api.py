@@ -29,6 +29,8 @@ class FakeTahoe:
         return cap_string
 
     def get_data(self, cap_string):
+        if self.always_exception:
+            raise ValueError("Simulated exception.")
         if self.bad_response:
             status = 400
             return None, status
@@ -82,6 +84,18 @@ def test_index_post_data_exception():
     app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
 
     response = client.post("/", data={"data": "test_data"})
+
+    assert response.status_code == 200
+    assert "Error" in response.text
+    assert "Unable to contact Tahoe server" in response.text
+    assert "ValueError" in response.text
+    assert "Simulated exception" in response.text
+
+def test_index_post_capstring_exception():
+    fake_tahoe = FakeTahoe(always_exception=True)
+    app.dependency_overrides[get_tahoe_client] = lambda: fake_tahoe
+
+    response = client.post("/", data={"cap_string": "test_cap_string"})
 
     assert response.status_code == 200
     assert "Error" in response.text
