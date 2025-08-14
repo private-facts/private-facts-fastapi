@@ -1,6 +1,6 @@
 # Private Facts FastAPI
 
-This app demonstrates how you can use FastAPI to store data to, and retrieve it from, a Tahoe server.
+This app demonstrates how you can use FastAPI to store and encrypt data on, and retrieve and decrypt it from, a Tahoe server.
 
 ## Installation
 Install dependencies:
